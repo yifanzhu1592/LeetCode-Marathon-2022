@@ -14,23 +14,27 @@
  * }
  */
 class Solution {
+    private Integer prev;
+
     public boolean isValidBST(TreeNode root) {
-        Stack<TreeNode> stack = new Stack<>();
-        Integer prev = null;
-        
-        while (!stack.isEmpty()|| root != null) {
-            while (root != null) {
-                stack.push(root);
-                root = root.left;
-            }
-            root = stack.pop();
-            if (prev != null && prev >= root.val) {
-                return false;
-            }
-            prev = root.val;
-            root = root.right;
+        prev = null;
+        return inorder(root);
+    }
+
+    private boolean inorder(TreeNode root) {
+        if (root == null) {
+            return true;
         }
-        
+        if (!inorder(root.left)) {
+            return false;
+        }
+        if (prev != null && root.val <= prev) {
+            return false;
+        }
+        prev = root.val;
+        if (!inorder(root.right)) {
+            return false;
+        }
         return true;
     }
 }
