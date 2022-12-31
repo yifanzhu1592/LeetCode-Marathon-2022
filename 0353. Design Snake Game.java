@@ -47,11 +47,12 @@ class SnakeGame {
             set.add(queue.peekLast());
             queue.offerFirst(newHead);
             return foodIndex;
+        } else {
+            set.add(newHead);
+            queue.offerFirst(newHead);
+            queue.removeLast();
+            return foodIndex;
         }
-        set.add(newHead);
-        queue.offerFirst(newHead);
-        queue.removeLast();
-        return foodIndex;
     }
 }
 
