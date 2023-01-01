@@ -1,36 +1,37 @@
 class Solution {
     public String decodeString(String s) {
-        String res = "";
+        StringBuilder sb = new StringBuilder();
         Stack<Integer> countStack = new Stack<>();
-        Stack<String> resStack = new Stack<>();
-        int idx = 0;
-        while (idx < s.length()) {
-            if (Character.isDigit(s.charAt(idx))) {
+        Stack<String> resultStack = new Stack<>();
+        int index = 0;
+
+        while (index < s.length()) {
+            if (Character.isDigit(s.charAt(index))) {
                 int count = 0;
-                while (Character.isDigit(s.charAt(idx))) {
-                    count = 10 * count + (s.charAt(idx) - '0');
-                    idx++;
+                while (Character.isDigit(s.charAt(index))) {
+                    count = 10 * count + s.charAt(index) - '0';
+                    index++;
                 }
                 countStack.push(count);
-            }
-            else if (s.charAt(idx) == '[') {
-                resStack.push(res);
-                res = "";
-                idx++;
-            }
-            else if (s.charAt(idx) == ']') {
-                StringBuilder temp = new StringBuilder (resStack.pop());
-                int repeatTimes = countStack.pop();
-                for (int i = 0; i < repeatTimes; i++) {
-                    temp.append(res);
+            } else if (s.charAt(index) == '[') {
+                resultStack.push(sb.toString());
+                sb.setLength(0);
+                index++;
+            } else if (s.charAt(index) == ']') {
+                int count = countStack.pop();
+                String currentString = sb.toString();
+                for (int i = 0; i < count - 1; i++) {
+                    sb.append(currentString);
                 }
-                res = temp.toString();
-                idx++;
-            }
-            else {
-                res += s.charAt(idx++);
+                String previousString = resultStack.pop();
+                sb.insert(0, previousString);
+                index++;
+            } else {
+                sb.append(s.charAt(index));
+                index++;
             }
         }
-        return res;
+
+        return sb.toString();
     }
 }
